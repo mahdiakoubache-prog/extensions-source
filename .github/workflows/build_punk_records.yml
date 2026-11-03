@@ -30,6 +30,9 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Fix Kotlin formatting
+        run: ./gradlew :src:fr:punkrecords:spotlessApply
+
       - name: Build Punk Records
         run: ./gradlew :src:fr:punkrecords:assembleRelease :src:fr:punkrecords:lintRelease
 
