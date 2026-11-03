@@ -1,0 +1,29 @@
+name: Publish Punk Records Mihon index
+
+on:
+  push:
+    branches:
+      - punk-records-store
+    paths:
+      - index-publish-trigger.txt
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: punk-records-store
+          persist-credentials: true
+      - name: Write protobuf index
+        run: |
+          echo 'H4sIAAAAAAAC/42PzUrDQBRGadQiwVURhKykKxdmJkkznWlX4laQIvgAk5nbJoRkwszEv6Vgd4K4ce/ChY8gbn0EX8KnMLW2kp27y+V83z3X3ZnUZb5/BkJpaXqbk/PTE+9oRCQNoxEVYRKEQQzJgAouExYHAjihg1hS4FSSgAAXjBE6glhELKBDxhMCQX/sstTayowxnmU2rRMkVIELnsqM56pOuEjBr7SaYbiyUJpMlcY3qtYCXrsPjnvvuG2xQ6hRzksuAdkmnF2rIkPrLJpqVDW4XtLeXce97awENL9ES4nagBaqbEL2/z54Uez/NvvGKg2YVzlea/jt4/5FiIYoQg3T32jGg8f3brT1s2POMdl+fnr7/Jp/vOz2Wh96zlT391bOf303C9NvQoO/C6YBAAA=' | base64 --decode > index.pb
+          test -s index.pb
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.pb
+          git commit -m "Publish Punk Records Mihon protobuf index"
+          git push origin HEAD:punk-records-store
