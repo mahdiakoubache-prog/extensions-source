@@ -21,11 +21,9 @@ abstract class PunkRecords : KeiSource() {
     private val apiUrl = "https://api.punkrecordz.com/graphql"
     private val jsonType = "application/json; charset=utf-8".toMediaType()
 
-    override suspend fun getPopularManga(page: Int): MangasPage =
-        getCatalogPage(page, "updateTime")
+    override suspend fun getPopularManga(page: Int): MangasPage = getCatalogPage(page, "updateTime")
 
-    override suspend fun getLatestUpdates(page: Int): MangasPage =
-        getCatalogPage(page, "updateTime")
+    override suspend fun getLatestUpdates(page: Int): MangasPage = getCatalogPage(page, "updateTime")
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
         val all = mutableListOf<SManga>()
