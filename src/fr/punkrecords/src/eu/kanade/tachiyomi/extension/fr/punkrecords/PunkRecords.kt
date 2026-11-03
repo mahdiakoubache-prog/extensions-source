@@ -143,7 +143,8 @@ abstract class PunkRecords : KeiSource() {
             val array = data.optJSONArray("chapters") ?: break
             if (array.length() == 0) break
             for (index in 0 until array.length()) {
-                val number = array.optJSONObject(index)?.opt("number")?.toString() ?: continue
+                val rawNumber = array.optJSONObject(index)?.opt("number")?.toString() ?: continue
+                val number = rawNumber.toBigDecimalOrNull()?.stripTrailingZeros()?.toPlainString() ?: rawNumber
                 val url = "/mangas/$slug/$number"
                 result += SChapter.create().apply {
                     name = "Chapitre $number"
@@ -175,6 +176,7 @@ abstract class PunkRecords : KeiSource() {
 
     private fun imageUrl(path: String): String {
         if (path.startsWith("http://") || path.startsWith("https://")) return path
+        if (path.isBlank() || path == "null") return ""
         val clean = path.removePrefix("/")
         return when {
             clean.startsWith("images/") -> "https://api.punkrecordz.com/$clean"
