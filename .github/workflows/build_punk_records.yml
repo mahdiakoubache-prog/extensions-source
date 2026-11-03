@@ -1,0 +1,42 @@
+name: Build Punk Records APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch containing the Punk Records extension
+        required: true
+        default: add-punk-records-extension
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Punk Records
+        run: ./gradlew :src:fr:punkrecords:assembleRelease :src:fr:punkrecords:lintRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: punk-records-apk
+          path: src/fr/punkrecords/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 7
