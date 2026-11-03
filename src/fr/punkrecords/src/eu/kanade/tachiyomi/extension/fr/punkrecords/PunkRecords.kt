@@ -11,8 +11,6 @@ import keiyoushi.source.KeiSource
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -52,7 +50,7 @@ abstract class PunkRecords : KeiSource() {
     ): SMangaUpdate {
         val slug = manga.url.substringAfter("/mangas/").substringBefore("/")
         val updatedManga = if (fetchDetails) fetchManga(slug) ?: manga else manga
-        val updatedChapters = if (fetchChapters) fetchChapters(slug) else emptyList()
+        val updatedChapters = if (fetchChapters) fetchChapters(slug) else chapters
         return SMangaUpdate(updatedManga, updatedChapters)
     }
 
@@ -60,12 +58,12 @@ abstract class PunkRecords : KeiSource() {
         val slug = chapter.url.substringAfter("/mangas/").substringBefore("/")
         val number = chapter.url.substringAfterLast("/")
         val query = """
-            query ChapterPages($slug: String, $number: Float) {
+            query ChapterPages(${'$'}slug: String, ${'$'}number: Float) {
               chapter(where: {
                 deleted: false
                 published: true
-                number: $number
-                manga: { slug: $slug }
+                number: ${'$'}number
+                manga: { slug: ${'$'}slug }
               }) {
                 pages { original colored }
               }
@@ -90,12 +88,12 @@ abstract class PunkRecords : KeiSource() {
 
     private suspend fun fetchCatalog(skip: Int, limit: Int, orderField: String = "updateTime"): List<SManga> {
         val query = """
-            query Catalog($skip: Int!, $limit: Int!, $order: Float!) {
+            query Catalog(${'$'}skip: Int!, ${'$'}limit: Int!, ${'$'}order: Float!) {
               mangas(
-                skip: $skip
-                limit: $limit
+                skip: ${'$'}skip
+                limit: ${'$'}limit
                 where: { published: true, deleted: false }
-                order: [{ field: "$orderField", order: $order }]
+                order: [{ field: "$orderField", order: ${'$'}order }]
               ) {
                 slug name thumb keywords story status statusProgression
               }
@@ -110,8 +108,8 @@ abstract class PunkRecords : KeiSource() {
 
     private suspend fun fetchManga(slug: String): SManga? {
         val query = """
-            query MangaBySlug($slug: String!) {
-              manga(where: { slug: $slug, published: true, deleted: false }) {
+            query MangaBySlug(${'$'}slug: String!) {
+              manga(where: { slug: ${'$'}slug, published: true, deleted: false }) {
                 slug name thumb keywords story status statusProgression
               }
             }
@@ -122,16 +120,16 @@ abstract class PunkRecords : KeiSource() {
 
     private suspend fun fetchChapters(slug: String): List<SChapter> {
         val query = """
-            query Chapters($slug: String!, $limit: Int!, $skip: Int!, $order: Float!) {
+            query Chapters(${'$'}slug: String!, ${'$'}limit: Int!, ${'$'}skip: Int!, ${'$'}order: Float!) {
               chapters(
-                limit: $limit
-                skip: $skip
+                limit: ${'$'}limit
+                skip: ${'$'}skip
                 where: {
                   deleted: false
                   published: true
-                  manga: { slug: $slug, published: true, deleted: false }
+                  manga: { slug: ${'$'}slug, published: true, deleted: false }
                 }
-                order: [{ field: "number", order: $order }]
+                order: [{ field: "number", order: ${'$'}order }]
               ) { number }
             }
         """.trimIndent()
