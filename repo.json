@@ -2,7 +2,7 @@
   "meta": {
     "name": "Punk Records",
     "website": "https://github.com/mahdiakoubache-prog/extensions-source",
-    "signingKeyFingerprint": "95d71297c1b0104eb37cadb840cea5734d7ea7d505eac88579e4c280768ab5e0"
+    "signingKeyFingerprint": "31025d4fa960276873c557f45f3b00a0075ad2ec9f86b0d3490e070a64cfbf6d"
   },
   "index_v2": "https://raw.githubusercontent.com/mahdiakoubache-prog/extensions-source/punk-records-store/index.pb"
 }
