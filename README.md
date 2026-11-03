@@ -54,3 +54,5 @@ official support means of Mihon/Tachiyomi. All credits to the codebase goes to t
 
 
 Punk Records Mihon repository build enabled.
+
+Build workflow: automatic APK publication is enabled on pushes to this branch.
