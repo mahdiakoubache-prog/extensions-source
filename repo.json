@@ -3,5 +3,6 @@
     "name": "Punk Records",
     "website": "https://github.com/mahdiakoubache-prog/extensions-source",
     "signingKeyFingerprint": "53037782007afa717e0fbf8c22bc4253376d88fc601d2e7f5c8bb927e88086bb"
-  }
+  },
+  "index_v2": "https://raw.githubusercontent.com/mahdiakoubache-prog/extensions-source/punk-records-store/index.pb"
 }
