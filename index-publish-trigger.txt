@@ -1,0 +1,1 @@
+Trigger publication of the Punk Records protobuf index.
