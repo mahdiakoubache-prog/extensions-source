@@ -88,7 +88,7 @@ abstract class PunkRecords : KeiSource() {
 
     private suspend fun fetchChapters(slug: String): List<SChapter> {
         val doc = fetchDocument("/manga/$slug")
-        val chapterPattern = Regex("^/" + Regex.escape(slug) + "/([0-9]+(?:\\\\.[0-9]+)?)$")
+                val chapterPattern = Regex("^/" + Regex.escape(slug) + "/([0-9.]+)$")
         val chapters = linkedMapOf<String, SChapter>()
 
         doc.select("a[href]").forEach { link ->
