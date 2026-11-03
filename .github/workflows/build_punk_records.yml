@@ -14,6 +14,7 @@ on:
     paths-ignore:
       - repo.json
       - index.min.json
+      - index-publish-trigger.txt
       - .github/workflows/build_punk_records.yml
 
 permissions:
