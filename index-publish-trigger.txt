@@ -1,1 +1,1 @@
-Trigger publication of the Punk Records protobuf index.
+Trigger publication of the Punk Records protobuf index with the current signing fingerprint.
