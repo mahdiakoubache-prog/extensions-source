@@ -6,7 +6,7 @@ on:
       branch:
         description: Branch containing the Punk Records extension
         required: true
-        default: add-punk-records-extension
+        default: punk-records-store
         type: string
   push:
     branches:
