@@ -36,6 +36,27 @@ jobs:
           distribution: temurin
           java-version: 25
 
+      - name: Configure permanent signing key
+        env:
+          PUNK_RECORDS_SIGNING_BUNDLE: ${{ secrets.PUNK_RECORDS_SIGNING_BUNDLE }}
+        run: |
+          if [ -z "$PUNK_RECORDS_SIGNING_BUNDLE" ]; then
+            echo "::error::Add the PUNK_RECORDS_SIGNING_BUNDLE repository Actions secret before building."
+            exit 1
+          fi
+          echo "$PUNK_RECORDS_SIGNING_BUNDLE" | base64 --decode > /tmp/punk-records-signing.zip
+          mkdir -p /tmp/punk-records-signing
+          unzip -q /tmp/punk-records-signing.zip -d /tmp/punk-records-signing
+          cp /tmp/punk-records-signing/signingkey.jks signingkey.jks
+          set -a
+          . /tmp/punk-records-signing/signing.properties
+          set +a
+          {
+            echo "KEY_STORE_PASSWORD=$KEY_STORE_PASSWORD"
+            echo "KEY_PASSWORD=$KEY_PASSWORD"
+            echo "ALIAS=$ALIAS"
+          } >> "$GITHUB_ENV"
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
