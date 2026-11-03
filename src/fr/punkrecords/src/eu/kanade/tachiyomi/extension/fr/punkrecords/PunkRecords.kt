@@ -88,7 +88,7 @@ abstract class PunkRecords : KeiSource() {
 
     private suspend fun fetchChapters(slug: String): List<SChapter> {
         val doc = fetchDocument("/manga/$slug")
-        val chapterPattern = Regex("""^/${'$'}slug/([0-9]+(?:\\.[0-9]+)?)$""")
+        val chapterPattern = Regex("^/" + Regex.escape(slug) + "/([0-9]+(?:\\\\.[0-9]+)?)$")
         val chapters = linkedMapOf<String, SChapter>()
 
         doc.select("a[href]").forEach { link ->
@@ -114,13 +114,13 @@ abstract class PunkRecords : KeiSource() {
             .build()
 
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw Exception("Punk Records HTTP ${'$'}{response.code}")
+            if (!response.isSuccessful) throw Exception("Punk Records HTTP ${response.code}")
             return Jsoup.parse(response.body?.string().orEmpty(), baseUrl)
         }
     }
 
-    override fun getMangaUrl(manga: SManga): String = "$baseUrl${'$'}{manga.url}"
-    override fun getChapterUrl(chapter: SChapter): String = "$baseUrl${'$'}{chapter.url}"
+    override fun getMangaUrl(manga: SManga): String = "$baseUrl${manga.url}"
+    override fun getChapterUrl(chapter: SChapter): String = "$baseUrl${chapter.url}"
 
     private companion object {
         const val PAGE_SIZE = 20
