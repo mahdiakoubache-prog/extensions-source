@@ -20,7 +20,7 @@ jobs:
           persist-credentials: true
       - name: Write protobuf index
         run: |
-          echo 'H4sIAAAAAAAC/42PzUrDQBRGadQiwVURhKykKxdmJkkznWlX4laQIvgAk5nbJoRkwszEv6Vgd4K4ce/ChY8gbn0EX8KnMLW2kp27y+V83z3X3ZnUZb5/BkJpaXqbk/PTE+9oRCQNoxEVYRKEQQzJgAouExYHAjihg1hS4FSSgAAXjBE6glhELKBDxhMCQX/sstTayowxnmU2rRMkVIELnsqM56pOuEjBr7SaYbiyUJpMlcY3qtYCXrsPjnvvuG2xQ6hRzksuAdkmnF2rIkPrLJpqVDW4XtLeXce97awENL9ES4nagBaqbEL2/z54Uez/NvvGKg2YVzlea/jt4/5FiIYoQg3T32jGg8f3brT1s2POMdl+fnr7/Jp/vOz2Wh96zlT391bOf303C9NvQoO/C6YBAAA=' | base64 --decode > index.pb
+          echo 'H4sIAAAAAAAC/42Qu0rEQBSG2aiLBKtFEFJJbCzMzGzu2UpsBVkEH2Ayl00IyYSZyXopLXwAG3sLiy0FG7H1EXwJn8Jx113ZQrA5zfm//3wce2fcNdX+OSNCUjXYHF+cnTrHwRD5EQ05zmLkJ3GaBCSKEh5GPMgRwgglEaY+IxlP4xzRIMwQQwnCcUh4zmPqjuy00LpVIwgnpS66HBBRwxoXtMSV6HJMCua1Ukwgu9KsUaVolKdEJwmb9V8s+9my18WOWAcq3GDKgDZweS3qEqxYwCVoTVwu0s6sZ9/2lgISX4KFRKeYJKIxkP6/D/wu9n6aPaWFZBC3FVxpeOvHvekQxMAHJjM4WDr87m/mlzmelsYEmOFumPzh/Vvf35qDqXUSbT8+vH583r0/7Q7W3uBYXLp7f5R+Afc7uoPLAQAA' | base64 --decode | gzip --decompress > index.pb
           test -s index.pb
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
