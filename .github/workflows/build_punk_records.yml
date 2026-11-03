@@ -15,6 +15,7 @@ on:
       - repo.json
       - index.min.json
       - index-publish-trigger.txt
+      - punk-records-build-trigger.txt
       - .github/workflows/build_punk_records.yml
 
 permissions:
@@ -48,14 +49,9 @@ jobs:
           mkdir -p /tmp/punk-records-signing
           unzip -q /tmp/punk-records-signing.zip -d /tmp/punk-records-signing
           cp /tmp/punk-records-signing/signingkey.jks signingkey.jks
-          set -a
           . /tmp/punk-records-signing/signing.properties
-          set +a
-          {
-            echo "KEY_STORE_PASSWORD=$KEY_STORE_PASSWORD"
-            echo "KEY_PASSWORD=$KEY_PASSWORD"
-            echo "ALIAS=$ALIAS"
-          } >> "$GITHUB_ENV"
+          echo "Signing certificate fingerprint:"
+          keytool -list -v -keystore signingkey.jks -storepass "$KEY_STORE_PASSWORD" -alias "$ALIAS" | grep 'SHA256:'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -64,7 +60,10 @@ jobs:
         run: ./gradlew :src:fr:punkrecords:spotlessApply
 
       - name: Build Punk Records
-        run: ./gradlew :src:fr:punkrecords:assembleRelease :src:fr:punkrecords:lintRelease
+        run: |
+          . /tmp/punk-records-signing/signing.properties
+          export KEY_STORE_PASSWORD KEY_PASSWORD ALIAS
+          ./gradlew :src:fr:punkrecords:assembleRelease :src:fr:punkrecords:lintRelease
 
       - name: Publish APK to repository branch
         run: |
