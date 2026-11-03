@@ -11,6 +11,10 @@ on:
   push:
     branches:
       - punk-records-store
+    paths-ignore:
+      - repo.json
+      - index.min.json
+      - .github/workflows/build_punk_records.yml
 
 permissions:
   contents: write
